@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sentence Practice</title>
+</head>
+<body>
+    <h1>Practice Full Sentence Answers</h1>
+    <p><strong>Question:</strong> {{ question }}</p>
+    <input type="text" id="answer" placeholder="Type your answer here">
+    <button onclick="submitAnswer()">Submit</button>
+    <p id="feedback"></p>
+
+    <script>
+        function submitAnswer() {
+            const answer = document.getElementById("answer").value;
+            fetch("/check", {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ answer: answer })
+            })
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById("feedback").innerText = data.feedback;
+            });
+        }
+    </script>
+</body>
+</html>
