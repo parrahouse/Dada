@@ -6,23 +6,28 @@
 <body>
     <h1>Practice Full Sentence Answers</h1>
     <p><strong>Question:</strong> {{ question }}</p>
-    <input type="text" id="answer" placeholder="Type your answer here">
-    <button onclick="submitAnswer()">Submit</button>
-    <p id="feedback"></p>
+<form id="responseForm" onsubmit="handleSubmit(event)">
+    <label for="answer"><strong>Your Answer:</strong></label><br>
+    <textarea id="answer" rows="4" cols="60" placeholder="Type your answer here..."></textarea><br><br>
+    <button type="submit">Submit</button>
+</form>
 
-    <script>
-        function submitAnswer() {
-            const answer = document.getElementById("answer").value;
-            fetch("/check", {
-                method: "POST",
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ answer: answer })
-            })
-            .then(res => res.json())
-            .then(data => {
-                document.getElementById("feedback").innerText = data.feedback;
-            });
-        }
-    </script>
+<p id="feedback"></p>
+
+<script>
+    function handleSubmit(event) {
+        event.preventDefault();  // Prevent form reload
+        const answer = document.getElementById("answer").value;
+        fetch("/check", {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ answer: answer })
+        })
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById("feedback").innerText = data.feedback;
+        });
+    }
+</script>
 </body>
 </html>
